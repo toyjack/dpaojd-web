@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-
 export async function GET(request: NextRequest) {
   const supabase = createClient();
 
@@ -13,9 +12,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { data, error, count } = await (await supabase).rpc("search_jyobatsu_raw_text", {
-      search_query: query,
-    });
+    const { data, error, count } = await (await supabase).rpc(
+      "search_jyobatsu_raw_text",
+      {
+        search_query: query,
+      },
+    );
 
     if (error) throw error;
 
