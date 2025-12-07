@@ -1,6 +1,9 @@
+import SearchPage from "@/components/search-panel";
 
-export default function Home() {
+export default  function Home() {
   return (
-    <main>home</main>
+    <main>
+      <SearchPage />
+    </main>
   );
 }
