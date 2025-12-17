@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
 import Footer from "@/components/footer";
+import { createClient } from "@/lib/supabase/server";
 
 async function DocumentItemPage({
   params,
