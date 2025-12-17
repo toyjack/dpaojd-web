@@ -1,109 +1,175 @@
-import Footer from "@/components/footer";
-import SearchPage from "@/components/search-panel";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { getFilterOptions, searchJyobatsu } from "@/actions/search";
+import Pagination from "@/components/pagination";
+import SearchForm from "@/components/search-form";
+import SearchResults from "@/components/search-results";
+import type {
+  FilterOptions,
+  JyobatsuSearchParams,
+  JyobatsuSearchResultAdvanced,
+  SearchFormData,
+} from "@/lib/supabase/type";
+
+export default function JyobatsuSearchPage() {
+  const [results, setResults] = useState<JyobatsuSearchResultAdvanced[]>([]);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(
+    null
+  );
+  const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastSearchParams, setLastSearchParams] =
+    useState<SearchFormData | null>(null);
+
+  const PAGE_SIZE = 50;
+
+  // フィルターオプションを読み込み
+  useEffect(() => {
+    async function loadFilterOptions() {
+      const { data, error } = await getFilterOptions();
+      if (!error && data) {
+        setFilterOptions(data);
+      }
+    }
+    loadFilterOptions();
+  }, []);
+
+  const handleSearch = async (formData: SearchFormData, page: number = 1) => {
+    setLoading(true);
+    setCurrentPage(page);
+    setLastSearchParams(formData);
+
+    // フォームデータをAPIパラメータに変換
+    const searchParams: JyobatsuSearchParams = {};
+
+    if (formData.honbunSearch) searchParams.本文検索 = formData.honbunSearch;
+    if (formData.shomeiSearch) searchParams.書名検索 = formData.shomeiSearch;
+    if (formData.henshaSearch) searchParams.編者検索 = formData.henshaSearch;
+    if (formData.shuppanshaSearch)
+      searchParams.出版社検索 = formData.shuppanshaSearch;
+    if (formData.jobatsuNameSearch)
+      searchParams.序跋名称検索 = formData.jobatsuNameSearch;
+    if (formData.yearFrom)
+      searchParams.出版年西暦開始 = parseInt(formData.yearFrom, 10);
+    if (formData.yearTo)
+      searchParams.出版年西暦終了 = parseInt(formData.yearTo, 10);
+    if (formData.mojiShurui) searchParams.本文文字種 = formData.mojiShurui;
+
+    searchParams.cross_line = formData.crossLine;
+    searchParams.match_type = formData.matchType;
+
+    const { data, error } = await searchJyobatsu(
+      searchParams,
+      PAGE_SIZE,
+      page,
+      "relevance"
+    );
+
+    if (error) {
+      console.error("Search error:", error);
+      setResults([]);
+      setTotalCount(0);
+    } else if (data && data.length > 0) {
+      setResults(data);
+      setTotalCount(data[0].total_count);
+    } else {
+      setResults([]);
+      setTotalCount(0);
+    }
+
+    setLoading(false);
+  };
+
+  const handlePageChange = (page: number) => {
+    if (lastSearchParams) {
+      handleSearch(lastSearchParams, page);
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-linear-to-b from-amber-50 to-white">
-      <main className="flex-1">
-        <div className="container mx-auto px-4 py-8 max-w-5xl">
-          <div className="hero py-8">
-            <div className="hero-content text-center">
-              <div className="max-w-4xl">
-                <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-3">
-                  辞書序跋データベース（仮）
-                </h1>
-                <p className="text-lg text-secondary font-light">
-                  Dictionary Prefaces and Postscripts Database of Japanese
-                  Dictionaries (Provisional)
-                </p>
-                <div className="divider divider-primary w-24 mx-auto" />
-              </div>
-            </div>
-          </div>
-
-          {/* name of each tab group should be unique */}
-          <div className="tabs tabs-lift">
-            <label className="tab">
-              <input type="radio" name="my_tabs_4" />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-4 me-2"
-              >
-                <title>Live</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
-                />
-              </svg>
-              全文検索
-            </label>
-            <div className="tab-content bg-base-100 border-base-300 p-6">
-              <div className="join join-vertical sm:join-horizontal w-full">
-                <input
-                  type="text"
-                  placeholder="検索キーワードを入力..."
-                  className="input input-bordered join-item flex-1 focus:outline-offset-0"
-                />
-                <button type="submit" className="btn btn-primary join-item">
-                  検索
-                </button>
-              </div>
-            </div>
-
-            <label className="tab">
-              <input type="radio" name="my_tabs_4" defaultChecked />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-4 me-2"
-              >
-                <title>Laugh</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
-                />
-              </svg>
-              詳細検索
-            </label>
-            <div className="tab-content bg-base-100 border-base-300 p-6">
-              Tab content 2
-            </div>
-
-            <label className="tab">
-              <input type="radio" name="my_tabs_4" />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-4 me-2"
-              >
-                <title>Love</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                />
-              </svg>
-              序抜一覧
-            </label>
-            <div className="tab-content bg-base-100 border-base-300 p-6">
-              Tab content 3
+    <div className="min-h-screen bg-linear-to-b from-amber-50 to-white py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="hero mb-8">
+          <div className="hero-content text-center">
+            <div className="max-w-4xl">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-2">
+                辞書序跋データベース（仮）
+              </h1>
+              <p className="text-secondary font-light">
+                Dictionary Prefaces and Postscripts Database of Japanese
+                Dictionaries (Provisional)
+              </p>
+              <div className="divider divider-primary w-24 mx-auto" />
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* 検索フォーム */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-4">
+              <SearchForm
+                filterOptions={filterOptions}
+                onSearch={(formData) => handleSearch(formData, 1)}
+                loading={loading}
+              />
+            </div>
+          </div>
+
+          {/* 検索結果 */}
+          <div className="lg:col-span-2 space-y-4">
+            {loading && (
+              <div className="card bg-base-100 shadow-lg border border-base-300">
+                <div className="card-body items-center text-center">
+                  <span className="loading loading-spinner loading-lg text-primary" />
+                  <p className="mt-4 text-base-content">検索中...</p>
+                </div>
+              </div>
+            )}
+
+            {!loading && results.length > 0 && (
+              <>
+                <SearchResults results={results} totalCount={totalCount} />
+                <Pagination
+                  currentPage={currentPage}
+                  totalCount={totalCount}
+                  pageSize={PAGE_SIZE}
+                  onPageChange={handlePageChange}
+                  loading={loading}
+                />
+              </>
+            )}
+
+            {!loading && results.length === 0 && lastSearchParams && (
+              <div className="hero min-h-[300px]">
+                <div className="hero-content text-center">
+                  <div className="max-w-md">
+                    <svg
+                      className="w-16 h-16 mx-auto mb-4 text-accent"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <title>No Results</title>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <p className="text-lg text-neutral">検索結果がありません</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

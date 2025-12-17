@@ -1,3 +1,5 @@
+import Members from "./members";
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -6,8 +8,12 @@ export default function Footer() {
       <div className="max-w-5xl w-full">
         <div className="divider divider-primary" />
         <aside>
+          <p>
+            <Members />
+          </p>
           <p className="text-primary-content text-sm">
-            Akari Fujimoto; Guanwei Liu &copy; {currentYear} 辞書序跋データベース. All rights reserved.
+            Akari Fujimoto; Guanwei Liu &copy; {currentYear}{" "}
+            辞書序跋データベース. All rights reserved.
           </p>
         </aside>
       </div>

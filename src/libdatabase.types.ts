@@ -724,6 +724,21 @@ export type Database = {
           類音: string
         }[]
       }
+      search_jyobatsu_advanced: {
+        Args: {
+          order_by?: string
+          page_number?: number
+          page_size?: number
+          search_params?: Json
+        }
+        Returns: Database["public"]["CompositeTypes"]["jyobatsu_search_result_advanced"][]
+        SetofOptions: {
+          from: "*"
+          to: "jyobatsu_search_result_advanced"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       search_jyobatsu_raw_text: {
         Args: { search_query: string }
         Returns: {
@@ -739,6 +754,30 @@ export type Database = {
       [_ in never]: never
     }
     CompositeTypes: {
+      jyobatsu_search_result_advanced: {
+        ID: string | null
+        文献ID: number | null
+        同一ID内順序: number | null
+        作成者: string | null
+        整理番号: string | null
+        書名: string | null
+        編者: string | null
+        出版社: string | null
+        出版年和暦: string | null
+        出版年西暦: string | null
+        本文文字種: string | null
+        序跋名称: string | null
+        本文: string | null
+        所在表示: string | null
+        左右: string | null
+        行: number | null
+        備考: string | null
+        直接包含検索語: boolean | null
+        高亮本文: string | null
+        匹配状態: string | null
+        relevance_score: number | null
+        total_count: number | null
+      }
       pgroonga_condition: {
         query: string | null
         weigths: number[] | null
