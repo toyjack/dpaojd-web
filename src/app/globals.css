@@ -2,6 +2,51 @@
 
 @plugin "daisyui";
 
+/* Custom amber theme for Japanese dictionary database */
+:root {
+  color-scheme: light;
+
+  /* Primary - Amber tones for main actions */
+  --color-primary: oklch(55% 0.12 45);          /* amber-700 */
+  --color-primary-content: oklch(98% 0.02 90);  /* amber-50 */
+
+  /* Secondary - Darker amber for accents */
+  --color-secondary: oklch(48% 0.12 45);        /* amber-800 */
+  --color-secondary-content: oklch(98% 0.02 90); /* amber-50 */
+
+  /* Accent - Lighter amber for highlights */
+  --color-accent: oklch(75% 0.12 45);           /* amber-600 */
+  --color-accent-content: oklch(98% 0.02 90);   /* white */
+
+  /* Neutral - Gray tones */
+  --color-neutral: oklch(45% 0.01 270);         /* gray-700 */
+  --color-neutral-content: oklch(98% 0.01 270); /* gray-50 */
+
+  /* Base colors - Background tones */
+  --color-base-100: oklch(100% 0 0);            /* white */
+  --color-base-200: oklch(98% 0.02 90);         /* amber-50 */
+  --color-base-300: oklch(95% 0.04 90);         /* amber-100 */
+  --color-base-content: oklch(25% 0.01 270);    /* gray-900 */
+
+  /* Semantic colors */
+  --color-info: oklch(70% 0.15 230);            /* blue-500 */
+  --color-info-content: oklch(98% 0.01 230);
+  --color-success: oklch(65% 0.15 145);         /* green-500 */
+  --color-success-content: oklch(98% 0.01 145);
+  --color-warning: oklch(80% 0.15 70);          /* yellow-500 */
+  --color-warning-content: oklch(25% 0.01 270);
+  --color-error: oklch(60% 0.20 25);            /* red-600 */
+  --color-error-content: oklch(98% 0.01 25);
+
+  /* Border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+
+  /* Border width */
+  --border: 1px;
+}
+
 .keyword {
   @apply bg-amber-200 text-amber-900 px-1 py-0.5 rounded font-medium;
 }

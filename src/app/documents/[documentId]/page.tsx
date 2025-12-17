@@ -22,10 +22,10 @@ async function DocumentItemPage({
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-amber-700 hover:text-amber-900 mb-6 group"
+            className="btn btn-ghost btn-sm gap-2 text-primary hover:text-secondary mb-6"
           >
             <svg
-              className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -41,24 +41,28 @@ async function DocumentItemPage({
             検索に戻る
           </Link>
 
-          <article className="bg-white rounded-xl shadow-lg border border-amber-200 p-8">
-            <header className="mb-6 pb-6 border-b border-amber-100">
-              <h1 className="text-3xl font-serif font-bold text-amber-900 mb-2">
-                {documentId}
-              </h1>
-              <p className="text-sm text-amber-600">文書ID: {documentId}</p>
-            </header>
-
-            <section>
-              <h2 className="text-xl font-serif font-semibold text-amber-900 mb-4">
-                内容
-              </h2>
-              <div className="bg-amber-50 rounded-lg p-6 border border-amber-100">
-                <pre className="whitespace-pre-wrap font-serif text-gray-800 leading-relaxed text-lg">
-                  {document.data?.text}
-                </pre>
+          <article className="card bg-base-100 shadow-lg border border-base-300">
+            <div className="card-body">
+              <div className="pb-6 border-b border-base-300">
+                <h1 className="text-3xl font-serif font-bold text-primary mb-2">
+                  {documentId}
+                </h1>
+                <div className="badge badge-outline badge-warning">
+                  文書ID: {documentId}
+                </div>
               </div>
-            </section>
+
+              <div className="mt-6">
+                <h2 className="text-xl font-serif font-semibold text-primary mb-4">
+                  内容
+                </h2>
+                <div className="mockup-code bg-base-200 border border-base-300">
+                  <pre className="px-6 whitespace-pre-wrap font-serif text-base-content leading-relaxed text-lg">
+                    {document.data?.text}
+                  </pre>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
       </main>
