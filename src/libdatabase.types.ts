@@ -207,6 +207,7 @@ export type Database = {
     Functions: {
       count_dhsjr_by_word: { Args: { search_query: string }; Returns: number }
       count_dhsjr_fulltext: { Args: { search_query: string }; Returns: number }
+      get_jyobatsu_filter_options: { Args: never; Returns: Json }
       pgroonga_command:
         | { Args: { groongacommand: string }; Returns: string }
         | {

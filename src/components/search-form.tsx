@@ -216,7 +216,7 @@ export default function SearchForm({
         {/* 匹配類型 */}
         <div className="form-control">
           <label htmlFor="matchType" className="label">
-            <span className="label-text font-medium">結果表示</span>
+            <span className="label-text font-medium"></span>
           </label>
           <select
             id="matchType"

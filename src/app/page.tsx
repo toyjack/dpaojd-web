@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getFilterOptions, searchJyobatsu } from "@/actions/search";
+import {
+  getFilterOptions,
+  type JyobatsuSearchResultAdvancedReturns,
+  searchJyobatsu,
+} from "@/actions/search";
 import Pagination from "@/components/pagination";
 import SearchForm from "@/components/search-form";
 import SearchResults from "@/components/search-results";
 import type {
   FilterOptions,
   JyobatsuSearchParams,
-  JyobatsuSearchResultAdvanced,
   SearchFormData,
 } from "@/lib/supabase/type";
 
 export default function JyobatsuSearchPage() {
-  const [results, setResults] = useState<JyobatsuSearchResultAdvanced[]>([]);
+  const [results, setResults] = useState<JyobatsuSearchResultAdvancedReturns>(
+    []
+  );
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(
     null
   );
@@ -73,7 +78,7 @@ export default function JyobatsuSearchPage() {
       setTotalCount(0);
     } else if (data && data.length > 0) {
       setResults(data);
-      setTotalCount(data[0].total_count);
+      setTotalCount(data[0].total_count || 0);
     } else {
       setResults([]);
       setTotalCount(0);

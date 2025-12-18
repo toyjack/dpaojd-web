@@ -1,11 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type {
-  FilterOptions,
-  JyobatsuSearchParams,
-  JyobatsuSearchResultAdvanced,
-} from "@/lib/supabase/type";
+import type { FilterOptions, JyobatsuSearchParams } from "@/lib/supabase/type";
+import type { Database, Json } from "@/libdatabase.types";
+
+
+
+export type JyobatsuSearchResultAdvancedReturns =
+  Database["public"]["Functions"]["search_jyobatsu_advanced"]["Returns"];
 
 export async function searchJyobatsu(
   searchParams: JyobatsuSearchParams,
@@ -16,7 +18,7 @@ export async function searchJyobatsu(
   const supabase = await createClient();
 
   const { data, error } = await supabase.rpc("search_jyobatsu_advanced", {
-    search_params: searchParams,
+    search_params: searchParams as unknown as Json,
     page_size: pageSize,
     page_number: pageNumber,
     order_by: orderBy,
@@ -28,7 +30,7 @@ export async function searchJyobatsu(
   }
 
   return {
-    data: data as JyobatsuSearchResultAdvanced[],
+    data: data,
     error: null,
   };
 }
@@ -44,7 +46,7 @@ export async function getFilterOptions() {
   }
 
   return {
-    data: data as FilterOptions,
+    data: data as unknown as FilterOptions,
     error: null,
   };
 }

@@ -2,10 +2,10 @@
 "use client";
 
 import Link from "next/link";
-import type { JyobatsuSearchResultAdvanced } from "@/lib/supabase/type";
+import type { JyobatsuSearchResultAdvancedReturns } from "@/actions/search";
 
 interface SearchResultsProps {
-  results: JyobatsuSearchResultAdvanced[];
+  results: JyobatsuSearchResultAdvancedReturns;
   totalCount: number;
 }
 
@@ -126,11 +126,11 @@ export default function SearchResults({
               <div className="divider my-2" />
               <div
                 className="prose prose-sm max-w-none text-base-content leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: record.高亮本文 }}
+                dangerouslySetInnerHTML={{ __html: record.高亮本文 || "" }}
               />
 
               {/* 関連度スコア */}
-              {record.relevance_score > 0 && (
+              {record.relevance_score && record.relevance_score > 0 && (
                 <div className="text-xs text-neutral mt-2">
                   関連度: {record.relevance_score.toFixed(2)}
                 </div>
