@@ -5,7 +5,7 @@ import type { Database } from "@/libdatabase.types";
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE!,
+  process.env.SUPABASE_SERVICE_ROLE!,
 );
 export async function get_count(book_id: number) {
   const { data, error } = await supabase.from("jyobatsu_book_stat").select().eq("book_id", book_id).single()
