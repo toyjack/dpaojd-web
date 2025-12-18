@@ -29,6 +29,9 @@
       },
       "a11y": {
         "noLabelWithoutControl": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off"
       }
     },
     "domains": {

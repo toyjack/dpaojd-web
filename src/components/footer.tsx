@@ -8,9 +8,8 @@ export default function Footer() {
       <div className="max-w-5xl w-full">
         <div className="divider divider-primary" />
         <aside>
-          <p>
-            <Members />
-          </p>
+          <Members />
+
           <p className="text-primary-content text-sm">
             Akari Fujimoto; Guanwei Liu &copy; {currentYear}{" "}
             辞書序跋データベース. All rights reserved.
