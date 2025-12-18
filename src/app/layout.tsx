@@ -23,7 +23,7 @@ export default function RootLayout({
                   辞書序跋データベース（仮）
                 </h1>
                 <p className="text-secondary font-light">
-                  Dictionary Prefaces and Postscripts Database of Japanese
+                  Dictionary Prefaces and Afterwords Database of Japanese
                   Dictionaries (Provisional)
                 </p>
                 <div className="divider divider-primary w-24 mx-auto" />
