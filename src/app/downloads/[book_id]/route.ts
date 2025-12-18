@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { update_count } from "@/actions/update-stat";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
@@ -18,6 +19,8 @@ export async function GET(
     return new Response("File not found", { status: 404 });
   }
   const file = new Blob([textData.text], { type: "text/plain" });
+
+  await update_count(parseInt(book_id, 10), "download");
 
   return new Response(file, {
     headers: {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { get_count, update_count } from "@/actions/update-stat";
 import MainTextViewer from "@/components/main-text";
 import { createClient } from "@/lib/supabase/server";
 
@@ -74,6 +75,12 @@ async function BookItemPage({
   }
 
   const book_meta = records[0];
+
+  await update_count(book_meta.文献ID!, "access");
+
+  const { access_count, download_count } = await get_count(
+    parseInt(book_id, 10)
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-linear-to-b from-amber-50 to-white">
@@ -191,6 +198,21 @@ async function BookItemPage({
                   </div>
                 </>
               )}
+              <div className="mt-6 stats stats-vertical sm:stats-horizontal shadow bg-base-200 w-full">
+                <div className="stat">
+                  <div className="stat-title">閲覧回数</div>
+                  <div className="stat-value text-primary text-lg">
+                    {access_count}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-title">ダウンロード回数</div>
+                  <div className="stat-value text-secondary text-lg">
+                    {download_count}
+                  </div>
+                </div>
+              </div>
 
               <div className="divider" />
 

@@ -92,6 +92,24 @@ export type Database = {
         }
         Relationships: []
       }
+      jyobatsu_book_stat: {
+        Row: {
+          access_count: number | null
+          book_id: number
+          download_count: number | null
+        }
+        Insert: {
+          access_count?: number | null
+          book_id?: number
+          download_count?: number | null
+        }
+        Update: {
+          access_count?: number | null
+          book_id?: number
+          download_count?: number | null
+        }
+        Relationships: []
+      }
       jyobatsu_raw_text: {
         Row: {
           created_at: string
