@@ -1,6 +1,7 @@
 // app/jyobatsu-search/components/SearchResults.tsx
 "use client";
 
+import Link from "next/link";
 import type { JyobatsuSearchResultAdvanced } from "@/lib/supabase/type";
 
 interface SearchResultsProps {
@@ -53,9 +54,12 @@ export default function SearchResults({
             <div className="card-body">
               {/* タイトル行 */}
               <div className="flex items-start justify-between gap-4">
-                <h4 className="text-xl font-serif font-bold text-primary flex-1">
+                <Link
+                  href={`/book/${record.文献ID}`}
+                  className="text-xl font-serif font-bold text-primary flex-1 link link-hover"
+                >
                   {record.書名}
-                </h4>
+                </Link>
                 <span
                   className={`badge badge-sm whitespace-nowrap ${
                     record.匹配状態 === "✓ 完整匹配"
@@ -98,10 +102,10 @@ export default function SearchResults({
                 )}
                 {record.序跋名称 && (
                   <div className="flex gap-2">
-                    <span className="font-medium text-secondary">序跋名称:</span>
-                    <span className="text-base-content">
-                      {record.序跋名称}
+                    <span className="font-medium text-secondary">
+                      序跋名称:
                     </span>
+                    <span className="text-base-content">{record.序跋名称}</span>
                   </div>
                 )}
                 {record.出版社 && (
@@ -113,9 +117,7 @@ export default function SearchResults({
                 {record.所在表示 && (
                   <div className="flex gap-2">
                     <span className="font-medium text-secondary">所在:</span>
-                    <span className="text-base-content">
-                      {record.所在表示}
-                    </span>
+                    <span className="text-base-content">{record.所在表示}</span>
                   </div>
                 )}
               </div>
